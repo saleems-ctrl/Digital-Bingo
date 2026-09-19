@@ -4,6 +4,7 @@ let playerId = localStorage.getItem('housie_player_id') || null;
 let playerName = localStorage.getItem('housie_player_name') || null;
 let myTicket = null;
 let calledSet = new Set();
+let markedByPlayer = new Set(); // numbers this player has manually tapped
 
 const nameScreen = document.getElementById('name-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -31,6 +32,7 @@ socket.on('joined', (data) => {
   playerId = data.player_id;
   playerName = data.name;
   myTicket = data.ticket;
+  markedByPlayer = new Set(); // fresh ticket (first join or game reset) starts unmarked
   localStorage.setItem('housie_player_id', playerId);
   localStorage.setItem('housie_player_name', playerName);
 
@@ -56,16 +58,38 @@ function renderTicket() {
         cell.className = 'cell num';
         cell.textContent = n;
         cell.dataset.num = n;
+        cell.addEventListener('click', () => onTicketCellTap(n, cell));
       }
       el.appendChild(cell);
     }
   }
 }
 
-function markTicket() {
+function onTicketCellTap(n, cell) {
+  if (markedByPlayer.has(n)) return; // already dabbed
+  if (!calledSet.has(n)) {
+    showToast("That number hasn't been called yet");
+    return;
+  }
+  markedByPlayer.add(n);
+  cell.classList.remove('callable');
+  cell.classList.add('marked');
+}
+
+// Reflects which cells are tappable ("callable" — called but not yet
+// dabbed by this player) vs already dabbed. Marking itself only ever
+// happens from a tap in onTicketCellTap, never automatically.
+function updateTicketHighlights() {
   document.querySelectorAll('#ticket .cell.num').forEach((cell) => {
     const n = parseInt(cell.dataset.num, 10);
-    cell.classList.toggle('marked', calledSet.has(n));
+    if (markedByPlayer.has(n)) {
+      cell.classList.add('marked');
+      cell.classList.remove('callable');
+    } else if (calledSet.has(n)) {
+      cell.classList.add('callable');
+    } else {
+      cell.classList.remove('callable');
+    }
   });
 }
 
@@ -93,7 +117,7 @@ function renderClaims(winners) {
 
 function applyState(state) {
   calledSet = new Set(state.called_numbers);
-  markTicket();
+  updateTicketHighlights();
   if (state.current_number) {
     document.getElementById('current-number').textContent = state.current_number;
     document.getElementById('current-nickname').textContent = NICKNAMES[state.current_number] || '';
