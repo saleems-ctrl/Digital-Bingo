@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Housie — Caller Screen</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand-row">
+      <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Apollo Pharmacy"
+           onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+      <span id="logo-fallback" class="logo-fallback" style="display:none;">Apollo Pharmacy</span>
+      <div class="divider"></div>
+      <span class="subtitle">Housie — Caller Screen</span>
+      <span class="player-count" style="margin-left:auto;">
+        <span id="player-count">0</span> players joined
+      </span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="card caller-card">
+          <div id="caller-empty" class="caller-empty">Press "Call next number" to start.</div>
+          <div id="caller-display" style="display:none;">
+            <div class="caller-number" id="current-number">—</div>
+            <div class="caller-nickname" id="current-nickname"></div>
+          </div>
+
+          <div class="controls-row">
+            <button class="btn btn-primary" id="btn-call">Call next number</button>
+            <div class="auto-call">
+              <label><input type="checkbox" id="auto-toggle"> Auto-call every</label>
+              <input type="number" id="auto-interval" value="6" min="2" max="60"> sec
+            </div>
+            <button class="btn btn-danger" id="btn-reset">Reset game</button>
+          </div>
+          <p class="hint" id="remaining-hint"></p>
+        </div>
+
+        <div class="card">
+          <h2>Called numbers</h2>
+          <div class="board" id="board"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card join-panel">
+          <h2>Players join here</h2>
+          <div id="qrcode"></div>
+          <div class="join-link" id="join-link"></div>
+        </div>
+
+        <div class="card">
+          <h2>Prizes</h2>
+          <div class="prize-list" id="prize-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRIZES = {{ prizes | tojson }};
+    const PRIZE_LABELS = {{ prize_labels | tojson }};
+    const NICKNAMES = {{ nicknames_json | safe }};
+  </script>
+  <script src="{{ url_for('static', filename='host.js') }}"></script>
+</body>
+</html>

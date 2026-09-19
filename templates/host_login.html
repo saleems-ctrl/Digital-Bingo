@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Housie — Host Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="wrap narrow">
+    <div class="brand-row">
+      <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Apollo Pharmacy"
+           onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+      <span id="logo-fallback" class="logo-fallback" style="display:none;">Apollo Pharmacy</span>
+      <div class="divider"></div>
+      <span class="subtitle">Housie — Host</span>
+    </div>
+
+    <div class="card">
+      <h1>Host access</h1>
+      <p style="color:var(--ink-soft); font-size:14px;">Enter the caller passcode to open the number-calling screen.</p>
+      {% if error %}<p style="color:var(--apollo-deep); font-weight:600;">{{ error }}</p>{% endif %}
+      <form method="POST" class="name-form">
+        <input type="password" name="passcode" placeholder="Passcode" autofocus required>
+        <button class="btn btn-primary" type="submit">Enter</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Housie — Play</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+  <div id="winner-toast"></div>
+
+  <div class="wrap narrow">
+    <div class="brand-row">
+      <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Apollo Pharmacy"
+           onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+      <span id="logo-fallback" class="logo-fallback" style="display:none;">Apollo Pharmacy</span>
+      <div class="divider"></div>
+      <span class="subtitle">Housie</span>
+    </div>
+
+    <div id="name-screen" class="card">
+      <h1>Join the game</h1>
+      <p style="color:var(--ink-soft); font-size:14px;">Enter your name to get your ticket. Numbers will mark themselves as they're called — just watch the caller screen.</p>
+      <form id="name-form" class="name-form">
+        <input type="text" id="name-input" placeholder="Your name" required maxlength="40">
+        <button class="btn btn-primary" type="submit">Get my ticket</button>
+      </form>
+    </div>
+
+    <div id="game-screen" style="display:none;">
+      <div class="card current-banner">
+        <div class="num" id="current-number">—</div>
+        <div class="meta">
+          <div id="current-nickname">Waiting for the caller to start…</div>
+          <div id="player-name-display" style="margin-top:2px; font-weight:600;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Your ticket</h2>
+        <div class="ticket" id="ticket"></div>
+      </div>
+
+      <div class="card">
+        <h2>Claim a prize</h2>
+        <div class="claims-grid" id="claims-grid"></div>
+      </div>
+    </div>
+
+    <div class="footer-note">Apollo Pharmacy · Housie</div>
+  </div>
+
+  <script>
+    const PRIZES = {{ prizes | tojson }};
+    const PRIZE_LABELS = {{ prize_labels | tojson }};
+    const NICKNAMES = {{ nicknames_json | safe }};
+  </script>
+  <script src="{{ url_for('static', filename='join.js') }}"></script>
+</body>
+</html>

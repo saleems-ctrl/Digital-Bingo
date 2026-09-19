@@ -1,0 +1,400 @@
+/* ---------------------------------------------------------------------
+   Apollo Housie — design tokens
+   Base palette:
+     --paper     #FBF7F2  warm off-white, pharmacy-clean
+     --ink       #211D1B  near-black text
+     --apollo    #E4002B  Apollo red (approximate — swap if you have exact brand hex)
+     --apollo-deep #A50021 pressed/hover state for red
+     --marked    #1F8A57  marked-number green
+     --gold      #C99A3B  prize accent
+     --line      #E8DFD3  hairline border on paper
+   Type: 'Space Grotesk' for display/numbers, 'Inter' for body & UI text.
+--------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --paper: #FBF7F2;
+  --paper-raised: #FFFFFF;
+  --ink: #211D1B;
+  --ink-soft: #6B635C;
+  --apollo: #E4002B;
+  --apollo-deep: #A50021;
+  --marked: #1F8A57;
+  --marked-bg: #E6F4EC;
+  --gold: #C99A3B;
+  --line: #E8DFD3;
+  --radius: 14px;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 16px 64px;
+}
+
+.wrap.narrow {
+  max-width: 480px;
+}
+
+/* -------------------------- header / brand -------------------------- */
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.brand-row img.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.brand-row .logo-fallback {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--apollo);
+  letter-spacing: -0.01em;
+}
+
+.brand-row .divider {
+  width: 1px;
+  height: 28px;
+  background: var(--line);
+}
+
+.brand-row .subtitle {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* -------------------------- cards & layout -------------------------- */
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.card + .card { margin-top: 16px; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 820px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 22px; }
+h2 { font-size: 16px; color: var(--ink-soft); font-weight: 600; }
+
+p { line-height: 1.5; }
+
+/* -------------------------- caller display -------------------------- */
+
+.caller-card {
+  text-align: center;
+  padding: 28px 20px 24px;
+}
+
+.caller-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(96px, 22vw, 168px);
+  line-height: 1;
+  color: var(--apollo);
+}
+
+.caller-nickname {
+  font-size: 18px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.caller-empty {
+  font-size: 18px;
+  color: var(--ink-soft);
+  padding: 40px 0;
+}
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 22px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform .05s ease;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary { background: var(--apollo); color: #fff; }
+.btn-primary:hover { background: var(--apollo-deep); }
+
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink-soft); }
+
+.btn-danger { background: transparent; color: var(--apollo-deep); border: 1px solid var(--apollo-deep); }
+
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.auto-call {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.auto-call input[type="number"] {
+  width: 52px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-body);
+}
+
+/* -------------------------- called-number board -------------------------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.board .cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 7px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.board .cell.called {
+  background: var(--apollo);
+  color: #fff;
+  border-color: var(--apollo);
+}
+
+/* -------------------------- prizes panel -------------------------- */
+
+.prize-list { display: flex; flex-direction: column; gap: 8px; }
+
+.prize-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.prize-row .name { font-weight: 600; }
+
+.prize-row .status { color: var(--ink-soft); }
+
+.prize-row.won {
+  background: #FBF2DC;
+  border-color: var(--gold);
+}
+.prize-row.won .status { color: #8A6A1E; font-weight: 600; }
+
+/* -------------------------- QR / join panel -------------------------- */
+
+.join-panel { text-align: center; }
+.join-panel #qrcode { display: inline-block; margin: 10px 0; }
+.join-panel .join-link {
+  font-size: 14px;
+  word-break: break-all;
+  color: var(--apollo-deep);
+}
+
+.player-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* -------------------------- player / ticket page -------------------------- */
+
+.name-form { display: flex; flex-direction: column; gap: 12px; }
+.name-form input[type="text"] {
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 16px;
+  font-family: var(--font-body);
+}
+
+.current-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  text-align: center;
+}
+
+.current-banner .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--apollo);
+}
+
+.current-banner .meta {
+  text-align: left;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.ticket {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ticket .cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: clamp(12px, 3.6vw, 17px);
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+.ticket .cell.blank { background: transparent; }
+
+.ticket .cell.num { border: 1px solid var(--line); color: var(--ink); }
+
+.ticket .cell.marked {
+  background: var(--marked-bg);
+  border-color: var(--marked);
+  color: var(--marked);
+}
+
+.claims-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.claim-btn {
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--apollo);
+  background: #fff;
+  color: var(--apollo-deep);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+.claim-btn.won {
+  border-color: var(--gold);
+  background: #FBF2DC;
+  color: #8A6A1E;
+}
+
+.claim-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.claim-btn .who {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* -------------------------- toast / winner banner -------------------------- */
+
+#winner-toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%);
+  background: var(--ink);
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  transition: transform .35s ease;
+  z-index: 50;
+  text-align: center;
+}
+
+#winner-toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 30px;
+}
