@@ -322,12 +322,34 @@ p { line-height: 1.5; }
 
 .ticket .cell.blank { background: transparent; }
 
-.ticket .cell.num { border: 1px solid var(--line); color: var(--ink); }
+.ticket .cell.num {
+  border: 1px solid var(--line);
+  color: var(--ink);
+  cursor: default;
+  user-select: none;
+  transition: transform .08s ease;
+}
+
+.ticket .cell.num.callable {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201, 154, 58, 0.25) inset;
+  cursor: pointer;
+  animation: pulse-callable 1.4s ease-in-out infinite;
+}
+
+.ticket .cell.num.callable:active { transform: scale(0.92); }
+
+@keyframes pulse-callable {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(201, 154, 58, 0.25) inset; }
+  50% { box-shadow: 0 0 0 3px rgba(201, 154, 58, 0.5) inset; }
+}
 
 .ticket .cell.marked {
   background: var(--marked-bg);
   border-color: var(--marked);
   color: var(--marked);
+  cursor: default;
+  animation: none;
 }
 
 .claims-grid {
